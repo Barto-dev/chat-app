@@ -2,7 +2,9 @@
 
 import { useAuthActions } from '@convex-dev/auth/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { TriangleAlert } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
@@ -32,6 +34,7 @@ const formSchema = z.object({
 });
 
 export const SignInCard = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useAuthActions();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,8 +45,18 @@ export const SignInCard = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setIsLoading(true);
+      await signIn('password', { ...values, flow: 'signIn' });
+    } catch {
+      form.setError('root', {
+        type: 'manual',
+        message: 'Invalid email or password',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -54,6 +67,12 @@ export const SignInCard = () => {
           Use your email or another service to continue
         </CardDescription>
       </CardHeader>
+      {form.formState.errors.root && (
+        <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
+          <TriangleAlert className="size-4" />
+          <p>{form.formState.errors.root.message}</p>
+        </div>
+      )}
       <CardContent className="p-0 space-y-5">
         <Form {...form}>
           <form
@@ -67,6 +86,7 @@ export const SignInCard = () => {
                 <FormItem>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       placeholder="Email"
                       {...field}
                     />
@@ -82,6 +102,7 @@ export const SignInCard = () => {
                 <FormItem>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       autoComplete="current-password"
                       placeholder="Password"
                       type="password"
@@ -92,7 +113,12 @@ export const SignInCard = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Continue</Button>
+            <Button
+              disabled={isLoading}
+              type="submit"
+            >
+              Continue
+            </Button>
           </form>
         </Form>
         <Separator />

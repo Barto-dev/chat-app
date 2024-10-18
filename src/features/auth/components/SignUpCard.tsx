@@ -2,7 +2,9 @@
 
 import { useAuthActions } from '@convex-dev/auth/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { TriangleAlert } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
@@ -40,6 +42,7 @@ const formSchema = z
   });
 
 export const SignUpCard = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useAuthActions();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,9 +54,22 @@ export const SignUpCard = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const { email, password } = values;
+    try {
+      setIsLoading(true);
+      await signIn('password', { email, password, flow: 'signUp' });
+    } catch(err) {
+      console.log(err);
+      form.setError('root', {
+        type: 'manual',
+        message: 'Invalid email or password',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <Card className="h-full w-full p-8">
       <CardHeader className="p-0 mb-6">
@@ -62,6 +78,12 @@ export const SignUpCard = () => {
           Use your email or another service to continue
         </CardDescription>
       </CardHeader>
+      {form.formState.errors.root && (
+        <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6">
+          <TriangleAlert className="size-4" />
+          <p>{form.formState.errors.root.message}</p>
+        </div>
+      )}
       <CardContent className="p-0 space-y-5">
         <Form {...form}>
           <form
@@ -75,6 +97,7 @@ export const SignUpCard = () => {
                 <FormItem>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       placeholder="Email"
                       {...field}
                     />
@@ -90,6 +113,7 @@ export const SignUpCard = () => {
                 <FormItem>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       autoComplete="new-password"
                       placeholder="Password"
                       type="password"
@@ -101,6 +125,7 @@ export const SignUpCard = () => {
               )}
             />
             <FormField
+              disabled={isLoading}
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
