@@ -1,4 +1,8 @@
+'use client';
+
+import { useAuthActions } from '@convex-dev/auth/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
@@ -21,18 +25,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import { AuthFlow } from '@/features/auth/types';
-
-interface SignInCardProps {
-  setState: (state: AuthFlow) => void;
-}
 
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(3, 'Password must be at least 3 characters'),
 });
 
-export const SignInCard = ({ setState }: SignInCardProps) => {
+export const SignInCard = () => {
+  const { signIn } = useAuthActions();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -107,22 +108,22 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
           </Button>
           <Button
             className="relative"
-            onClick={() => console.log('Google')}
+            onClick={() => signIn('github')}
             variant="outline"
             size="lg"
           >
             <FaGithub className="size-5 absolute left-3" />
-            <span>Continue with Google</span>
+            <span>Continue with GitHub</span>
           </Button>
         </section>
         <p className="text-xs text-muted-foreground">
           Don&apos;t have an account?{' '}
-          <button
-            onClick={() => setState('signUp')}
+          <Link
+            href="/sign-up"
             className="text-sky-700 hover:underline cursor-pointer"
           >
             Sign Up
-          </button>
+          </Link>
         </p>
       </CardContent>
     </Card>
