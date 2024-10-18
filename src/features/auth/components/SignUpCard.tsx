@@ -30,6 +30,7 @@ import { Separator } from '@/components/ui/separator';
 
 const formSchema = z
   .object({
+    name: z.string(),
     email: z.string().email(),
     password: z.string().min(3, 'Password must be at least 3 characters'),
     confirmPassword: z
@@ -51,15 +52,16 @@ export const SignUpCard = () => {
       email: '',
       password: '',
       confirmPassword: '',
+      name: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { email, password } = values;
+    const { email, password, name } = values;
     try {
       setIsLoading(true);
-      await signIn('password', { email, password, flow: 'signUp' });
-    } catch(err) {
+      await signIn('password', { email, password, name, flow: 'signUp' });
+    } catch (err) {
       console.log(err);
       form.setError('root', {
         type: 'manual',
@@ -90,6 +92,22 @@ export const SignUpCard = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-y-2.5 w-full"
           >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      placeholder="Full name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"

@@ -1,28 +1,9 @@
-'use client';
-
-import { useAuthActions } from '@convex-dev/auth/react';
-
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
+import { UserButton } from '@/features/auth/components/UserButton';
 
 export default function Home() {
-  const router = useRouter();
-  const { signOut } = useAuthActions();
-
-  const onSignOut = async () => {
-    await signOut();
-    router.push('/sign-in');
-  };
-
   return (
     <div>
-      <Button
-        onClick={onSignOut}
-        type="button"
-      >
-        Sign out
-      </Button>
-      Logged in
+      <UserButton />
     </div>
   );
 }
