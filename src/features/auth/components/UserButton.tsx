@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser';
+import { useCurrentUser } from '@/features/auth/api/useCurrentUser';
 
 export const UserButton = () => {
   const router = useRouter();
