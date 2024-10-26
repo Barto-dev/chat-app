@@ -1,6 +1,6 @@
 import { Info, Search } from 'lucide-react';
 
-import { useWorkspaceId } from '@/app/hooks/useWorkspaceId';
+import { useWorkspaceId } from '@/hooks/useWorkspaceId';
 import { Button } from '@/components/ui/button';
 import { useGetWorkspaceById } from '@/features/workspaces/api/useGetWorkspaceById';
 
@@ -9,7 +9,7 @@ export const Toolbar = () => {
   const { data } = useGetWorkspaceById({ id: workspaceId });
 
   return (
-    <nav className="bg-[#481349] flex items-center justify-between h-10 p-1.5">
+    <nav className="bg-[#481349] flex items-center justify-between h-toolbar-height p-1.5">
       <div className="flex-1" />
       <div className="min-w-[280px] max-w-[642px] grow-[2] shrink">
         <Button

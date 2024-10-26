@@ -57,6 +57,8 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       spacing: {
+        'sidebar': '4.375rem', // 70px
+        'toolbar-height': '2.5rem', // 40px,
         105: '26.25rem', // 420px
       },
     },
