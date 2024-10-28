@@ -1,5 +1,7 @@
 import { ChevronDown, ListFilter, SquarePen } from 'lucide-react';
+import { useState } from 'react';
 
+import { Hint } from '@/components/Hint';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -11,7 +13,7 @@ import {
 import { getWorkspaceInitial } from '@/lib/getWorkspaceInitial';
 
 import { Doc } from '../../../../../convex/_generated/dataModel';
-import { Hint } from '@/components/Hint';
+import { PreferencesModal } from './PreferencesModal';
 
 interface WorkspaceHeaderProps {
   workspace: Doc<'workspaces'>;
@@ -22,8 +24,14 @@ export const WorkspaceHeader = ({
   isAdmin,
   workspace,
 }: WorkspaceHeaderProps) => {
+  const [preferencesOpen, setPreferencesOpen] = useState(false);
   return (
     <div className="flex items-center justify-between px-4 h-12 gap-0.5">
+      <PreferencesModal
+        open={preferencesOpen}
+        onOpenChange={setPreferencesOpen}
+        initialValue={workspace.name}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -54,7 +62,10 @@ export const WorkspaceHeader = ({
               <DropdownMenuItem className="cursor-pointer py-2">
                 Invite people to {workspace.name}
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer py-2">
+              <DropdownMenuItem
+                className="cursor-pointer py-2"
+                onClick={() => setPreferencesOpen(true)}
+              >
                 Preferences
               </DropdownMenuItem>
             </>
@@ -62,7 +73,10 @@ export const WorkspaceHeader = ({
         </DropdownMenuContent>
       </DropdownMenu>
       <div className="flex items-center gap-0.5">
-        <Hint label="Filter conversations" side="bottom">
+        <Hint
+          label="Filter conversations"
+          side="bottom"
+        >
           <Button
             variant="transparent"
             size="iconSm"
@@ -70,7 +84,10 @@ export const WorkspaceHeader = ({
             <ListFilter className="size-4" />
           </Button>
         </Hint>
-        <Hint label="New message" side="bottom">
+        <Hint
+          label="New message"
+          side="bottom"
+        >
           <Button
             variant="transparent"
             size="iconSm"

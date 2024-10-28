@@ -5,6 +5,7 @@ import { Toaster } from 'sonner';
 
 import { Modals } from '@/components/Modals';
 import { ConvexClientProvider } from '@/components/providers/ConvexClientProvider';
+import { JotaiProvider } from '@/components/providers/JotaiProvider';
 
 import './globals.css';
 
@@ -36,9 +37,11 @@ export default function RootLayout({
       >
         <ConvexAuthNextjsServerProvider>
           <ConvexClientProvider>
-            <Toaster />
-            <Modals />
-            {children}
+            <JotaiProvider>
+              <Toaster />
+              <Modals />
+              {children}
+            </JotaiProvider>
           </ConvexClientProvider>
         </ConvexAuthNextjsServerProvider>
       </body>

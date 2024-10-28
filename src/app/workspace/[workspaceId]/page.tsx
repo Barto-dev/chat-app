@@ -6,7 +6,8 @@ import { useGetWorkspaceById } from '@/features/workspaces/api/useGetWorkspaceBy
 const WorkspacePage = () => {
   const workspaceId = useWorkspaceId();
   const { data } = useGetWorkspaceById({ id: workspaceId });
-  console.log(data);
+  const t = data;
+
   return <div>T</div>;
 };
 
