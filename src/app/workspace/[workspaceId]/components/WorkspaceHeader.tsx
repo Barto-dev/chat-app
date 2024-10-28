@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { getWorkspaceInitial } from '@/lib/getWorkspaceInitial';
+import { getInitialLetter } from '@/lib/getInitialLetter';
 
 import { Doc } from '../../../../../convex/_generated/dataModel';
 import { PreferencesModal } from './PreferencesModal';
@@ -49,7 +49,7 @@ export const WorkspaceHeader = ({
         >
           <DropdownMenuItem className="cursor-pointer capitalize">
             <div className="size-9 relative overflow-hidden bg-[#616061] text-white font-semibold text-xl rounded-md flex-center mr-2">
-              {getWorkspaceInitial(workspace.name)}
+              {getInitialLetter(workspace.name)}
             </div>
             <div className="flex flex-col items-start">
               <p className="font-bold">{workspace.name}</p>
