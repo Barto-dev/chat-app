@@ -151,9 +151,36 @@ export const remove = mutation({
       await ctx.db.delete(workspaceMember._id);
     }
 
-
     await ctx.db.delete(id);
 
     return id;
+  },
+});
+
+export const newJoinCode = mutation({
+  args: { workspaceId: v.id('workspaces') },
+  handler: async (ctx, { workspaceId }) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (!userId) {
+      throw new Error('Unauthorized');
+    }
+
+    const member = await ctx.db
+      .query('members')
+      .withIndex('by_user_id_and_workspace_id', (q) =>
+        q.eq('userId', userId).eq('workspaceId', workspaceId),
+      )
+      .unique();
+
+    if (!member || member.role !== 'admin') {
+      throw new Error('Unauthorized');
+    }
+
+    const joinCode = generateCode(6);
+
+    await ctx.db.patch(workspaceId, { joinCode });
+
+    return workspaceId;
   },
 });

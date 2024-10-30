@@ -13,6 +13,7 @@ import {
 import { getInitialLetter } from '@/lib/getInitialLetter';
 
 import { Doc } from '../../../../../convex/_generated/dataModel';
+import { InviteToChannelModal } from './InviteToChannelModal';
 import { PreferencesModal } from './PreferencesModal';
 
 interface WorkspaceHeaderProps {
@@ -25,8 +26,14 @@ export const WorkspaceHeader = ({
   workspace,
 }: WorkspaceHeaderProps) => {
   const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
   return (
     <div className="flex items-center justify-between px-4 h-12 gap-0.5">
+      <InviteToChannelModal
+        open={inviteOpen}
+        onOpenChange={setInviteOpen}
+        workspace={workspace}
+      />
       <PreferencesModal
         open={preferencesOpen}
         onOpenChange={setPreferencesOpen}
@@ -59,7 +66,10 @@ export const WorkspaceHeader = ({
           {isAdmin && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer py-2">
+              <DropdownMenuItem
+                onClick={() => setInviteOpen(true)}
+                className="cursor-pointer py-2"
+              >
                 Invite people to {workspace.name}
               </DropdownMenuItem>
               <DropdownMenuItem
