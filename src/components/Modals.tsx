@@ -1,5 +1,6 @@
 'use client';
 
+import { CreateChannelModal } from '@/features/channels/components/CreateChannelModal';
 import { CreateWorkspaceModal } from '@/features/workspaces/components/CreateWorkspaceModal';
 import { useIsBrowser } from '@/hooks/useIsBrowser';
 
@@ -12,6 +13,7 @@ export const Modals = () => {
 
   return (
     <>
+      <CreateChannelModal />
       <CreateWorkspaceModal />
     </>
   );
