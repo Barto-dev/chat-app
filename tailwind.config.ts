@@ -57,9 +57,18 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       spacing: {
-        'sidebar': '4.375rem', // 70px
+        sidebar: '4.375rem', // 70px
         'toolbar-height': '2.5rem', // 40px,
         105: '26.25rem', // 420px
+      },
+      keyframes: {
+        'caret-blink': {
+          '0%,70%,100%': { opacity: '1' },
+          '20%,50%': { opacity: '0' },
+        },
+      },
+      animation: {
+        'caret-blink': 'caret-blink 1.25s ease-out infinite',
       },
     },
   },

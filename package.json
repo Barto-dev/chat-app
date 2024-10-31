@@ -23,6 +23,7 @@
     "clsx": "^2.1.1",
     "convex": "^1.16.6",
     "copy-to-clipboard": "^3.3.3",
+    "input-otp": "^1.2.5",
     "jotai": "^2.10.1",
     "lucide-react": "^0.453.0",
     "next": "14.2.15",
